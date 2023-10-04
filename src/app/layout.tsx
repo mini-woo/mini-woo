@@ -1,6 +1,7 @@
 import './globals.css'
 import type {Metadata} from 'next'
-import {TelegramProvider} from "@/app/TelegramProvider";
+import {TelegramProvider} from "@/providers/TelegramProvider";
+import {ContextProvider} from "@/providers/ContextProvider";
 
 export const metadata: Metadata = {
     title: 'MiniWoo',
@@ -29,7 +30,9 @@ export default function RootLayout({
         <html lang="en">
         <body>
         <TelegramProvider>
-            {children}
+            <ContextProvider>
+                {children}
+            </ContextProvider>
         </TelegramProvider>
         </body>
         </html>
