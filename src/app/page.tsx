@@ -20,7 +20,7 @@ export default function Home() {
             webApp?.MainButton.hide()
             webApp?.disableClosingConfirmation()
         }
-    },[state.cart])
+    },[state.cart.size])
     return (
         <main className="store-products">
             <StoreItem id={1}/>
