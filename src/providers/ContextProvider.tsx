@@ -3,10 +3,13 @@
 import * as React from 'react'
 
 type Action =
-    { type: "inc", id: number }
+    | { type: "mode", mode: Mode }
+    | { type: "inc", id: number }
     | { type: "dec", id: number }
 
 type Dispatch = (action: Action) => void
+
+type Mode = 'storefront' | 'order'
 
 export type Item = {
     id: number,
@@ -15,14 +18,19 @@ export type Item = {
 
 
 type State = {
+    mode: Mode
     cart: Map<number, Item>
 }
 
 const StateContext = React.createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined)
 
 function contextReducer(state: State, action: Action) {
-    console.log("dispatch", {action,state})
+    console.log("dispatch", {action, state})
     switch (action.type) {
+        case 'mode': {
+            state.mode = action.mode
+            break
+        }
         case 'inc': {
             const count = state.cart.get(action.id)?.count || 0
             state.cart.set(action.id, {id: action.id, count: count + 1})
@@ -54,7 +62,8 @@ function ContextProvider({
     children: React.ReactNode
 }) {
     const init: State = {
-        cart: new Map<number, Item>()
+        mode: "storefront",
+        cart: new Map<number, Item>(),
     }
     const [state, dispatch] = React.useReducer(contextReducer, init)
     // NOTE: you *might* need to memoize this value

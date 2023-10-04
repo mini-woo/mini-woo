@@ -1,45 +1,44 @@
 "use client"
-import './store-front.css'
+import {useEffect} from "react";
 import {useTelegram} from "@/providers/TelegramProvider";
 import {useContext} from "@/providers/ContextProvider";
-import StoreItem from "@/components/store-item";
-import {useEffect} from "react";
+import StoreFront from "@/components/store-front";
+import OrderOverview from "@/components/order-overview";
 
 export default function Home() {
     const {webApp, user} = useTelegram()
     const {state, dispatch} = useContext()
 
     useEffect(() => {
-        if (state.cart.size !== 0) {
+        if (state.mode === "order") {
+            webApp?.MainButton.setParams({
+                text: "CHECKOUT",
+            })
+            webApp?.BackButton.show()
+            webApp?.BackButton.onClick(() => {
+                dispatch({type: "mode", mode: "storefront"})
+            })
+        } else if (state.cart.size !== 0) {
             webApp?.MainButton.setParams({
                 text: "VIEW ORDER",
                 text_color: '#fff',
                 is_visible: true,
                 color: '#31b545'
             }).onClick(() => {
-                console.log("MainButton clicked")
+                dispatch({type: "mode", mode: "order"})
             })
+            webApp?.BackButton.hide()
             webApp?.enableClosingConfirmation()
-        }
-        else {
+        } else {
             webApp?.MainButton.hide()
             webApp?.disableClosingConfirmation()
         }
-    },[state.cart.size])
+    }, [state.mode, state.cart.size])
+
     return (
-        <main className="store-products">
-            <StoreItem id={1}/>
-            <StoreItem id={2}/>
-            <StoreItem id={22}/>
-            <StoreItem id={33}/>
-            <StoreItem id={432}/>
-            <StoreItem id={444}/>
-            <StoreItem id={10}/>
-            <StoreItem id={20}/>
-            <StoreItem id={220}/>
-            <StoreItem id={330}/>
-            <StoreItem id={4320}/>
-            <StoreItem id={4440}/>
+        <main className={`${state.mode}-mode`}>
+            <StoreFront/>
+            <OrderOverview/>
         </main>
     )
 }

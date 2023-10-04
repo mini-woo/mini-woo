@@ -1,0 +1,130 @@
+.order-overview {
+    display: none;
+    font-family: var(--default-font);
+    background-color: var(--bg-color);
+    transition: opacity var(--page-animation);
+    opacity: 1;
+}
+
+.order-mode .order-overview {
+    display: block;
+    opacity: 1;
+}
+
+.order-block {
+    background-color: var(--block-bg-color);
+    -webkit-box-shadow: 0 0.5px rgba(0, 0, 0, .07);
+    box-shadow: 0 0.5px rgba(0, 0, 0, .07);
+}
+
+.order-header-wrap {
+    padding: 21px 20px 14px;
+    display: flex;
+    align-items: center;
+}
+.order-header {
+    font-size: 17px;
+    line-height: 21px;
+    text-transform: uppercase;
+    flex-grow: 1;
+    padding: 0;
+    margin: 0;
+}
+.order-edit {
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 500;
+    color: var(--accent-color);
+}
+.order-item {
+    display: flex;
+    padding: 5px 20px 5px 14px;
+}
+.order-item-label {
+    flex-grow: 1;
+}
+.order-item-photo {
+    text-align: center;
+    width: 50px;
+    height: 50px;
+    margin-right: 11px;
+}
+.order-item-photo .cafe-item-emoji {
+    font-size: 38px;
+    line-height: 50px;
+}
+.order-item-photo .cafe-item-lottie {
+    width: 40px;
+    margin: 4px 0;
+}
+.order-item-title {
+    font-size: 15px;
+    line-height: 18px;
+    font-weight: 700;
+    padding: 3px 0;
+}
+.order-item-counter {
+    margin: 4px;
+    color: var(--main-color);
+}
+.order-item-description {
+    font-size: 14px;
+    line-height: 17px;
+    -webkit-font-smoothing: antialiased;
+    color: var(--page-hint-color);
+    padding: 2px 0;
+}
+.order-item-price {
+    font-size: 14px;
+    line-height: 17px;
+    font-weight: 500;
+    padding: 4px 0;
+}
+
+.order-text-field-wrap {
+    margin-top: 14px;
+}
+.order-text-field {
+    font-family: var(--default-font);
+    font-size: 17px;
+    line-height: 21px;
+    -webkit-font-smoothing: antialiased;
+    padding: 12px 20px 13px;
+    box-sizing: border-box;
+    display: block;
+    outline: none;
+    border: none;
+    border-radius: 0;
+    resize: none;
+    color: var(--text-color);
+    -webkit-user-select: auto;
+    user-select: auto;
+    cursor: auto;
+    width: 100%;
+}
+.order-text-field::-webkit-input-placeholder {
+    transition: color var(--animation);
+    color: var(--placeholder-color);
+    text-overflow: ellipsis;
+}
+.order-text-field::-moz-placeholder {
+    transition: color var(--animation);
+    color: var(--placeholder-color);
+    text-overflow: ellipsis;
+}
+.order-text-field:-ms-input-placeholder {
+    transition: color var(--animation);
+    color: var(--placeholder-color);
+    text-overflow: ellipsis;
+}
+.order-text-field::placeholder {
+    text-overflow: ellipsis;
+}
+.order-text-field-hint {
+    font-family: var(--default-font);
+    font-size: 14px;
+    line-height: 18px;
+    -webkit-font-smoothing: antialiased;
+    padding: 10px 20px 24px;
+    color: var(--hint-color);
+}

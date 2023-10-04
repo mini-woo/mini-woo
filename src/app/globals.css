@@ -1,3 +1,6 @@
+@import "@/styles/store-front.css";
+@import "@/styles/order-overview.css";
+
 :root {
     --tg-color-scheme: light;
     --tg-theme-bg-color: #ffffff;
@@ -73,5 +76,14 @@ body {
 }
 
 main {
+    min-height: 100vh;
+}
+
+main.order-mode {
+    background-color: var(--bg-color);
+}
+
+section {
     transition: filter var(--animation);
 }
+
