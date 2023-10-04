@@ -10,10 +10,15 @@ export default function Home() {
     const {state, dispatch} = useContext()
 
     useEffect(() => {
-        if (state.cart.size == 0) {
-            webApp?.MainButton.setText("VIEW ORDER")
-            webApp?.MainButton.onClick(() => {})
-            webApp?.MainButton.show()
+        if (state.cart.size !== 0) {
+            webApp?.MainButton.setParams({
+                text: "VIEW ORDER",
+                text_color: '#fff',
+                is_visible: true,
+                color: '#31b545'
+            }).onClick(() => {
+                console.log("MainButton clicked")
+            })
             webApp?.enableClosingConfirmation()
         }
         else {
