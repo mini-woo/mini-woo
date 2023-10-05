@@ -8,15 +8,15 @@ export const WEBHOOK_URL = `${BASE_PATH}/api/telegram-hook?secret_hash=${SECRET_
 const bot = new Telegraf(BOT_TOKEN)
 
 bot.start((ctx) => {
-    ctx.setChatMenuButton({
-        text: "Store",
-        type: "web_app",
-        web_app: {url: BASE_PATH},
-    })
     ctx.reply(
         "Let's get started ;)",
         Markup.inlineKeyboard([Markup.button.webApp("View Store", BASE_PATH)]),
     )
+    // ctx.setChatMenuButton({
+    //     text: "Store",
+    //     type: "web_app",
+    //     web_app: {url: BASE_PATH},
+    // })
 })
 
 export default bot
