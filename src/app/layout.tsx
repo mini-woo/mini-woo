@@ -1,7 +1,7 @@
 import './globals.css'
 import type {Metadata} from 'next'
-import {TelegramProvider} from "@/providers/TelegramProvider";
-import {ContextProvider} from "@/providers/ContextProvider";
+import {TelegramProvider} from "@/providers/telegram-provider";
+import {ContextProvider} from "@/providers/context-provider";
 
 export const metadata: Metadata = {
     title: 'MiniWoo',

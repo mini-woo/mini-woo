@@ -1,5 +1,5 @@
 "use client"
-import {useContext} from "@/providers/ContextProvider";
+import {useContext} from "@/providers/context-provider";
 import OrderItem from "@/components/order-item";
 
 export default function OrderOverview() {

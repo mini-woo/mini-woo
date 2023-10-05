@@ -1,6 +1,6 @@
 # Tech doc
 
-woocomerce apis(https://woocommerce.github.io/woocommerce-rest-api-docs/)
+woocommerce apis(https://woocommerce.github.io/woocommerce-rest-api-docs/)
 
 TODO: product attributes, product variations, create order, order list (search)
 TESTS: do we need to create a customer for placing an order?

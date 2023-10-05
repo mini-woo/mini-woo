@@ -1,7 +1,7 @@
 "use client"
 import {useEffect} from "react";
-import {useTelegram} from "@/providers/TelegramProvider";
-import {useContext} from "@/providers/ContextProvider";
+import {useTelegram} from "@/providers/telegram-provider";
+import {useContext} from "@/providers/context-provider";
 import StoreFront from "@/components/store-front";
 import OrderOverview from "@/components/order-overview";
 

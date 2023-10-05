@@ -1,17 +1,20 @@
 import {NextRequest, NextResponse} from "next/server";
-import bot, {WEBHOOK_URL} from "../bot";
+import bot, {SECRET_HASH, WEBHOOK_URL} from "@/lib/bot";
 
 export async function POST(request: NextRequest) {
-    const result = await bot.telegram.setWebhook(WEBHOOK_URL)
-    return NextResponse.json(result)
-}
+    try {
+        const query = request.nextUrl.searchParams
 
-export async function GET(request: NextRequest) {
-    const result = await bot.telegram.getWebhookInfo()
-    return NextResponse.json(result)
-}
-
-export async function DELETE(request: NextRequest) {
-    const result = await bot.telegram.deleteWebhook()
-    return NextResponse.json(result)
+        if (query.get("secret_hash") === SECRET_HASH) {
+            await bot.telegram.setWebhook(WEBHOOK_URL)
+        } else {
+            console.log("Unauthorized init call denied!")
+            return NextResponse.json('error', {status: 401})
+        }
+        return NextResponse.json('ok', {status: 200})
+    } catch (error: unknown) {
+        console.error("Error init telegram bot")
+        console.log(error)
+        return NextResponse.json('error', {status: 500})
+    }
 }

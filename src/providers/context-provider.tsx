@@ -4,6 +4,7 @@ import * as React from 'react'
 
 type Action =
     | { type: "mode", mode: Mode }
+    | { type: "products", products: Product[] }
     | { type: "inc", id: number }
     | { type: "dec", id: number }
 
@@ -11,15 +12,26 @@ type Dispatch = (action: Action) => void
 
 type Mode = 'storefront' | 'order'
 
-export type Item = {
+export type CartItem = {
     id: number,
     count: number,
 }
 
+export type Product = {
+    id: number,
+    name: string,
+    description: string,
+    price: string,
+    regular_price: string,
+    sale_price: string,
+    price_html: string,
+    images: any[],
+}
 
 type State = {
     mode: Mode
-    cart: Map<number, Item>
+    products: Product[]
+    cart: Map<number, CartItem>
 }
 
 const StateContext = React.createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined)
@@ -29,6 +41,10 @@ function contextReducer(state: State, action: Action) {
     switch (action.type) {
         case 'mode': {
             state.mode = action.mode
+            break
+        }
+        case 'products': {
+            state.products = action.products
             break
         }
         case 'inc': {
@@ -44,10 +60,8 @@ function contextReducer(state: State, action: Action) {
                 state.cart.set(action.id, {id: action.id, count: count - 1})
             break
         }
-
         default: {
-            // @ts-ignore
-            throw new Error(`Unhandled action type: ${action.type}`)
+            throw new Error(`Unhandled action: ${action}`)
         }
     }
     console.log(state)
@@ -63,7 +77,8 @@ function ContextProvider({
 }) {
     const init: State = {
         mode: "storefront",
-        cart: new Map<number, Item>(),
+        products:[],
+        cart: new Map<number, CartItem>(),
     }
     const [state, dispatch] = React.useReducer(contextReducer, init)
     // NOTE: you *might* need to memoize this value
@@ -84,4 +99,10 @@ function useContext() {
     return context
 }
 
-export {ContextProvider, useContext}
+function fetchProducts(dispatch: Dispatch) {
+    fetch("api/products", {method: "GET"}).then((res) =>
+        res.json().then((products) => dispatch({type: "products", products}))
+    )
+}
+
+export {ContextProvider, useContext, fetchProducts}

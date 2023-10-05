@@ -1,7 +1,5 @@
 import {NextRequest, NextResponse} from "next/server";
-import bot, {SECRET_HASH} from "./bot";
-
-bot.start((ctx) => ctx.reply('Welcome'))
+import bot, {SECRET_HASH} from "@/lib/bot";
 
 export async function POST(request: NextRequest) {
     try {
@@ -17,7 +15,7 @@ export async function POST(request: NextRequest) {
         }
         return NextResponse.json('ok', {status: 200})
     } catch (error: unknown) {
-        console.error("Error sending message")
+        console.error("Error handling bot update")
         console.log(error)
         return NextResponse.json('error', {status: 500})
     }

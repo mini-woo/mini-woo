@@ -1,5 +1,5 @@
 "use client"
-import {useContext} from "@/providers/ContextProvider";
+import {useContext} from "@/providers/context-provider";
 import Image from "next/image";
 
 export default function OrderItem({id}: { id: number }) {
