@@ -9,7 +9,8 @@
     background-color: var(--block-bg-color);
 }
 
-.order-mode .store-products {
+.order-mode .store-products,
+.item-mode .store-products {
     max-height: 0 !important;
     opacity: 0 !important;
 }

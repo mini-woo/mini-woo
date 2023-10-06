@@ -4,19 +4,22 @@ import * as React from 'react'
 
 type Action =
     | { type: "mode", mode: Mode }
+    | { type: "storefront" }
+    | { type: "order" }
+    | { type: "item", product: Product }
     | { type: "loading" }
     | { type: "products", products: Product[], hasMore: boolean, page: number, categoryId?: number }
     | { type: "categories", categories: Category[] }
     | { type: "select-cat", category: Category }
-    | { type: "inc", id: number }
-    | { type: "dec", id: number }
+    | { type: "inc", product: Product }
+    | { type: "dec", product: Product }
 
 type Dispatch = (action: Action) => void
 
-type Mode = 'storefront' | 'order'
+type Mode = 'storefront' | 'order' | 'item'
 
 export type CartItem = {
-    id: number,
+    product: Product,
     count: number,
 }
 
@@ -24,6 +27,7 @@ export type Product = {
     id: number,
     name: string,
     description: string,
+    short_description: string,
     price: string,
     regular_price: string,
     sale_price: string,
@@ -45,6 +49,7 @@ type State = {
     hasMore: boolean
     categories: Category[]
     selectedCategory?: Category
+    selectedProduct?: Product
     cart: Map<number, CartItem>
 }
 
@@ -56,6 +61,14 @@ function contextReducer(state: State, action: Action) {
             state.mode = action.mode
             break
         }
+        case 'item':
+            state.selectedProduct = action.product
+        case 'storefront':
+        case 'order': {
+            state.mode = action.type
+            break
+        }
+
         case 'loading' : {
             state.loading = true
             break
@@ -88,16 +101,16 @@ function contextReducer(state: State, action: Action) {
             break
         }
         case 'inc': {
-            const count = state.cart.get(action.id)?.count || 0
-            state.cart.set(action.id, {id: action.id, count: count + 1})
+            const count = state.cart.get(action.product.id)?.count || 0
+            state.cart.set(action.product.id, {product: action.product, count: count + 1})
             break
         }
         case 'dec': {
-            const count = state.cart.get(action.id)?.count || 0
+            const count = state.cart.get(action.product.id)?.count || 0
             if (count <= 1)
-                state.cart.delete(action.id)
+                state.cart.delete(action.product.id)
             else
-                state.cart.set(action.id, {id: action.id, count: count - 1})
+                state.cart.set(action.product.id, {product: action.product, count: count - 1})
             break
         }
         default: {

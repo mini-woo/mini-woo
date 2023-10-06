@@ -1,5 +1,6 @@
 @import "@/styles/store-front.css";
 @import "@/styles/order-overview.css";
+@import "@/styles/product-overview.css";
 
 :root {
     --tg-color-scheme: light;

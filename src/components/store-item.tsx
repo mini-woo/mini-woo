@@ -11,24 +11,28 @@ export default function StoreItem({product}: { product: Product }) {
 
     return (
         <div className={`store-product ${cartItem ? "selected" : ""}`}>
-            <div className="store-product-counter">{cartItem?.count}</div>
-            <img
-                {...image}
-                width={74}
-                height={74}
-            />
-            <div className="store-product-label">
-                <span className="store-product-title">{product.name}</span>
-                <span className="store-product-price" dangerouslySetInnerHTML={{ __html: product.price_html }}></span>
-                {/*<span className="store-product-price">${product.price}</span>*/}
+            <div
+                onClick={() => dispatch({type: "item", product})}
+            >
+                <div className="store-product-counter">{cartItem?.count}</div>
+                <img
+                    {...image}
+                    width={74}
+                    height={74}
+                />
+                <div className="store-product-label">
+                    <span className="store-product-title">{product.name}</span>
+                    <span className="store-product-price" dangerouslySetInnerHTML={{ __html: product.price_html }}></span>
+                    {/*<span className="store-product-price">${product.price}</span>*/}
+                </div>
             </div>
             <div className="store-product-buttons">
                 <button className="store-product-decr-button"
-                        onClick={() => dispatch({type: "dec", id})}
+                        onClick={() => dispatch({type: "dec", product})}
                 >
                 </button>
                 <button className="store-product-incr-button"
-                        onClick={() => dispatch({type: "inc", id})}
+                        onClick={() => dispatch({type: "inc", product})}
                 >
                     <span className="button-item-label">Add</span>
                 </button>

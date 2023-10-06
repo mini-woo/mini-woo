@@ -4,6 +4,7 @@ import {useTelegram} from "@/providers/telegram-provider";
 import {useAppContext} from "@/providers/context-provider";
 import StoreFront from "@/components/store-front";
 import OrderOverview from "@/components/order-overview";
+import ProductOverview from "@/components/product-overview";
 
 export default function Home() {
     const {webApp, user} = useTelegram()
@@ -16,7 +17,7 @@ export default function Home() {
             })
             webApp?.BackButton.show()
             webApp?.BackButton.onClick(() => {
-                dispatch({type: "mode", mode: "storefront"})
+                dispatch({type: "storefront"})
             })
         } else if (state.cart.size !== 0) {
             webApp?.MainButton.setParams({
@@ -25,7 +26,7 @@ export default function Home() {
                 is_visible: true,
                 color: '#31b545'
             }).onClick(() => {
-                dispatch({type: "mode", mode: "order"})
+                dispatch({type: "order"})
             })
             webApp?.BackButton.hide()
             webApp?.enableClosingConfirmation()
@@ -38,6 +39,7 @@ export default function Home() {
     return (
         <main className={`${state.mode}-mode`}>
             <StoreFront/>
+            <ProductOverview/>
             <OrderOverview/>
         </main>
     )

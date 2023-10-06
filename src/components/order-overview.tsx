@@ -6,7 +6,7 @@ export default function OrderOverview() {
     const {state, dispatch} = useAppContext()
 
     const items = Array.from(state.cart.values())
-        .map((cartItem) => <OrderItem key={cartItem.id} id={cartItem.id}/>)
+        .map((cartItem) => <OrderItem key={cartItem.product.id} id={cartItem.product.id}/>)
 
     return (
         <section className="order-overview">
@@ -14,7 +14,7 @@ export default function OrderOverview() {
                 <div className="order-header-wrap">
                     <h2 className="order-header">Your Order</h2>
                     <span className="order-edit"
-                          onClick={() => dispatch({type: "mode", mode: "storefront"})}>Edit</span>
+                          onClick={() => dispatch({type: "storefront"})}>Edit</span>
                 </div>
                 <div className="order-items">
                     {items}
