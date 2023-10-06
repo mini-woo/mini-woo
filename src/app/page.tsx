@@ -11,13 +11,19 @@ export default function Home() {
     const {state, dispatch} = useAppContext()
 
     useEffect(() => {
+        webApp?.BackButton.onClick(() => {
+            dispatch({type: "storefront"})
+        })
+        if (state.mode === "storefront")
+            webApp?.BackButton.hide()
+        else
+            webApp?.BackButton.show()
+
         if (state.mode === "order") {
             webApp?.MainButton.setParams({
                 text: "CHECKOUT",
-            })
-            webApp?.BackButton.show()
-            webApp?.BackButton.onClick(() => {
-                dispatch({type: "storefront"})
+            }).onClick(() => {
+                console.log("checkout!!!")
             })
         } else if (state.cart.size !== 0) {
             webApp?.MainButton.setParams({
@@ -28,7 +34,6 @@ export default function Home() {
             }).onClick(() => {
                 dispatch({type: "order"})
             })
-            webApp?.BackButton.hide()
             webApp?.enableClosingConfirmation()
         } else {
             webApp?.MainButton.hide()
