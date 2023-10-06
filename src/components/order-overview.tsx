@@ -1,9 +1,9 @@
 "use client"
-import {useContext} from "@/providers/context-provider";
+import {useAppContext} from "@/providers/context-provider";
 import OrderItem from "@/components/order-item";
 
 export default function OrderOverview() {
-    const {state, dispatch} = useContext()
+    const {state, dispatch} = useAppContext()
 
     const items = Array.from(state.cart.values())
         .map((cartItem) => <OrderItem key={cartItem.id} id={cartItem.id}/>)

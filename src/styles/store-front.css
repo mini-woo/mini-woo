@@ -168,6 +168,24 @@ button,
     z-index: 1;
 }
 
+.store-categories {
+    width: 100%;
+    padding: 4px;
+    overflow-x: visible;
+    overflow-y: hidden;
+    white-space: nowrap;
+}
+
+.store-categories div {
+    display: inline-block;
+    margin: 4px;
+    border-radius: 12px;
+    padding: 6px;
+    background-color: var(--bg-color);
+    font-weight: 600;
+    line-height: 12px;
+}
+
 @keyframes shine {
     to {
         background-position-x: -200%;

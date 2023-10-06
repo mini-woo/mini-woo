@@ -4,7 +4,11 @@ import * as React from 'react'
 
 type Action =
     | { type: "mode", mode: Mode }
+    | { type: "loading" }
     | { type: "products", products: Product[] }
+    | { type: "page", products: Product[] }
+    | { type: "categories", categories: Category[] }
+    | { type: "select-cat", id: number }
     | { type: "inc", id: number }
     | { type: "dec", id: number }
 
@@ -28,9 +32,18 @@ export type Product = {
     images: any[],
 }
 
+export type Category = {
+    id: number,
+    name: string,
+}
+
 type State = {
     mode: Mode
+    loading: boolean
     products: Product[]
+    page: number
+    categories: Category[]
+    selectedCategoryId?: number
     cart: Map<number, CartItem>
 }
 
@@ -43,8 +56,28 @@ function contextReducer(state: State, action: Action) {
             state.mode = action.mode
             break
         }
+        case 'loading' : {
+            state.loading = true
+            break
+        }
         case 'products': {
             state.products = action.products
+            state.page = 1
+            state.loading = false
+            break
+        }
+        case 'page': {
+            state.products.push(...action.products)
+            state.page = (state.page + 1)
+            state.loading = false
+            break
+        }
+        case 'categories': {
+            state.categories = action.categories
+            break
+        }
+        case 'select-cat': {
+            state.selectedCategoryId = action.id
             break
         }
         case 'inc': {
@@ -77,7 +110,10 @@ function ContextProvider({
 }) {
     const init: State = {
         mode: "storefront",
-        products:[],
+        loading: true,
+        products: [],
+        page: 1,
+        categories: [],
         cart: new Map<number, CartItem>(),
     }
     const [state, dispatch] = React.useReducer(contextReducer, init)
@@ -91,7 +127,7 @@ function ContextProvider({
     )
 }
 
-function useContext() {
+function useAppContext() {
     const context = React.useContext(StateContext)
     if (context === undefined) {
         throw new Error('useContext must be used within a ContextProvider')
@@ -99,10 +135,33 @@ function useContext() {
     return context
 }
 
-function fetchProducts(dispatch: Dispatch) {
-    fetch("api/products", {method: "GET"}).then((res) =>
+function fetchProducts(state: State, dispatch: Dispatch) {
+    dispatch({type: "loading"})
+    let url = "api/products?per_page=12"
+    if (state.selectedCategoryId)
+        url = url + "&category=" + state.selectedCategoryId
+    fetch(url, {method: "GET"}).then((res) =>
         res.json().then((products) => dispatch({type: "products", products}))
     )
 }
 
-export {ContextProvider, useContext, fetchProducts}
+function fetchMoreProducts(state: State, dispatch: Dispatch) {
+    console.log("XXX:" + state.page)
+    if (state.products.length !== state.page * 12 || state.loading)
+        return
+    dispatch({type: "loading"})
+    let url = "api/products?per_page=12&page=" + (state.page + 1)
+    if (state.selectedCategoryId)
+        url = url + "&category=" + state.selectedCategoryId
+    fetch(url, {method: "GET"}).then((res) =>
+        res.json().then((products) => dispatch({type: "page", products}))
+    )
+}
+
+function fetchCategories(dispatch: Dispatch) {
+    fetch("api/categories", {method: "GET"}).then((res) =>
+        res.json().then((categories) => dispatch({type: "categories", categories}))
+    )
+}
+
+export {ContextProvider, useAppContext, fetchProducts, fetchMoreProducts, fetchCategories}

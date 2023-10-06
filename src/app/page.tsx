@@ -1,13 +1,13 @@
 "use client"
 import {useEffect} from "react";
 import {useTelegram} from "@/providers/telegram-provider";
-import {useContext} from "@/providers/context-provider";
+import {useAppContext} from "@/providers/context-provider";
 import StoreFront from "@/components/store-front";
 import OrderOverview from "@/components/order-overview";
 
 export default function Home() {
     const {webApp, user} = useTelegram()
-    const {state, dispatch} = useContext()
+    const {state, dispatch} = useAppContext()
 
     useEffect(() => {
         if (state.mode === "order") {

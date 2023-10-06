@@ -1,8 +1,8 @@
 "use client"
-import {Product, useContext} from "@/providers/context-provider";
+import {Product, useAppContext} from "@/providers/context-provider";
 
 export default function StoreItem({product}: { product: Product }) {
-    const {state, dispatch} = useContext()
+    const {state, dispatch} = useAppContext()
     const id = product.id
     const cartItem = state.cart.get(id)
 
