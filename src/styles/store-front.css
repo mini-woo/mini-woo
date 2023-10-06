@@ -47,6 +47,10 @@
     font-weight: 500;
 }
 .store-product-price {
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    overflow: clip;
     font-weight: 700;
     white-space: nowrap;
 }
