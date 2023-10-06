@@ -5,10 +5,9 @@ import * as React from 'react'
 type Action =
     | { type: "mode", mode: Mode }
     | { type: "loading" }
-    | { type: "products", products: Product[] }
-    | { type: "page", products: Product[] }
+    | { type: "products", products: Product[], hasMore: boolean, page: number, categoryId?: number }
     | { type: "categories", categories: Category[] }
-    | { type: "select-cat", id: number }
+    | { type: "select-cat", category: Category }
     | { type: "inc", id: number }
     | { type: "dec", id: number }
 
@@ -35,6 +34,7 @@ export type Product = {
 export type Category = {
     id: number,
     name: string,
+    count: number,
 }
 
 type State = {
@@ -42,15 +42,15 @@ type State = {
     loading: boolean
     products: Product[]
     page: number
+    hasMore: boolean
     categories: Category[]
-    selectedCategoryId?: number
+    selectedCategory?: Category
     cart: Map<number, CartItem>
 }
 
 const StateContext = React.createContext<{ state: State; dispatch: Dispatch } | undefined>(undefined)
 
 function contextReducer(state: State, action: Action) {
-    console.log("dispatch", {action, state})
     switch (action.type) {
         case 'mode': {
             state.mode = action.mode
@@ -61,15 +61,15 @@ function contextReducer(state: State, action: Action) {
             break
         }
         case 'products': {
-            state.products = action.products
-            state.page = 1
-            state.loading = false
-            break
-        }
-        case 'page': {
+            if (
+                state.selectedCategory?.id !== action.categoryId ||
+                state.page !== action.page - 1
+            )
+                return state;
             state.products.push(...action.products)
-            state.page = (state.page + 1)
+            state.page = action.page
             state.loading = false
+            state.hasMore = action.hasMore
             break
         }
         case 'categories': {
@@ -77,7 +77,14 @@ function contextReducer(state: State, action: Action) {
             break
         }
         case 'select-cat': {
-            state.selectedCategoryId = action.id
+            state.products = new Array(0)
+            state.page = 0
+            state.loading = true
+            state.hasMore = true
+            if (state.selectedCategory?.id === action.category.id)
+                state.selectedCategory = undefined
+            else
+                state.selectedCategory = action.category
             break
         }
         case 'inc': {
@@ -97,22 +104,20 @@ function contextReducer(state: State, action: Action) {
             throw new Error(`Unhandled action: ${action}`)
         }
     }
-    console.log(state)
     return {
         ...state
     }
 }
 
-function ContextProvider({
-                             children,
-                         }: {
+function ContextProvider({children}: {
     children: React.ReactNode
 }) {
     const init: State = {
         mode: "storefront",
         loading: true,
-        products: [],
-        page: 1,
+        products: Array(0),
+        page: 0,
+        hasMore: true,
         categories: [],
         cart: new Map<number, CartItem>(),
     }
@@ -135,33 +140,27 @@ function useAppContext() {
     return context
 }
 
+const PER_PAGE = 12
+
 function fetchProducts(state: State, dispatch: Dispatch) {
     dispatch({type: "loading"})
-    let url = "api/products?per_page=12"
-    if (state.selectedCategoryId)
-        url = url + "&category=" + state.selectedCategoryId
+    const page = (state.page + 1)
+    const categoryId = state.selectedCategory?.id
+    let url = "api/products?per_page=" + PER_PAGE + "&page=" + page
+    if (categoryId)
+        url = url + "&category=" + categoryId
     fetch(url, {method: "GET"}).then((res) =>
-        res.json().then((products) => dispatch({type: "products", products}))
-    )
-}
-
-function fetchMoreProducts(state: State, dispatch: Dispatch) {
-    console.log("XXX:" + state.page)
-    if (state.products.length !== state.page * 12 || state.loading)
-        return
-    dispatch({type: "loading"})
-    let url = "api/products?per_page=12&page=" + (state.page + 1)
-    if (state.selectedCategoryId)
-        url = url + "&category=" + state.selectedCategoryId
-    fetch(url, {method: "GET"}).then((res) =>
-        res.json().then((products) => dispatch({type: "page", products}))
+        res.json().then((products) => {
+            const hasMore = products.length === PER_PAGE
+            dispatch({type: "products", products, page, hasMore, categoryId})
+        })
     )
 }
 
 function fetchCategories(dispatch: Dispatch) {
-    fetch("api/categories", {method: "GET"}).then((res) =>
+    fetch("api/categories?per_page=30", {method: "GET"}).then((res) =>
         res.json().then((categories) => dispatch({type: "categories", categories}))
     )
 }
 
-export {ContextProvider, useAppContext, fetchProducts, fetchMoreProducts, fetchCategories}
+export {ContextProvider, useAppContext, fetchProducts, fetchCategories}

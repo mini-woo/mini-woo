@@ -10,9 +10,9 @@ export default function StoreCategories() {
     },[])
 
     const items = state.categories.map((category) =>
-        <div style={state.selectedCategoryId === category.id ? {backgroundColor: "var(--accent-color)"} : {}}
+        <div style={state.selectedCategory?.id === category.id ? {backgroundColor: "var(--accent-color)"} : {}}
              key={category.id}
-             onClick={() => dispatch({type: "select-cat", id: category.id})}
+             onClick={() => dispatch({type: "select-cat", category: category})}
         >{category.name}</div>
     )
 

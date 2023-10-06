@@ -5,13 +5,15 @@ export default function StoreItem({product}: { product: Product }) {
     const {state, dispatch} = useAppContext()
     const id = product.id
     const cartItem = state.cart.get(id)
+    const image = product.images[0] ?
+        {src:  product.images[0].src, alt : product.images[0].alt || "" } :
+        {src: "/next.svg" , alt: "no image"}
 
     return (
         <div className={`store-product ${cartItem ? "selected" : ""}`}>
             <div className="store-product-counter">{cartItem?.count}</div>
             <img
-                src={product.images[0]?.src || "/next.svg"}
-                alt={product.images[0]?.alt || "no image"}
+                {...image}
                 width={74}
                 height={74}
             />
