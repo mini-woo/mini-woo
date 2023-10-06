@@ -37,7 +37,7 @@ export default function StoreFront() {
     const items = state.loading && state.products.length === 0 ?
         Array(12).fill(<StoreItemSkeleton/>) :
         state.products.length === 0 ?
-            [<div>Empty :(</div>] :
+            [<div key='empty'>Empty :(</div>] :
             state.products.map((product) => <StoreItem key={product.id} product={product}/>)
 
     return (
