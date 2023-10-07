@@ -160,6 +160,8 @@ function fetchProducts(state: State, dispatch: Dispatch) {
     const page = (state.page + 1)
     const categoryId = state.selectedCategory?.id
     let url = "api/products?per_page=" + PER_PAGE + "&page=" + page
+    //other types not supported yet!
+    url = url + "&type=simple"
     if (categoryId)
         url = url + "&category=" + categoryId
     fetch(url, {method: "GET"}).then((res) =>

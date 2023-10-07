@@ -11,8 +11,8 @@ function call(method: string, api: string, query: any, body: any) {
     };
 
     let url = `${WOOCOMMERCE_URL}/wp-json/wc/v3/${api}`.replace("//","/");
-    query.append("consumer_secret", CONSUMER_SECRET);
-    query.append("consumer_key", CONSUMER_KEY);
+    query.set("consumer_secret", CONSUMER_SECRET);
+    query.set("consumer_key", CONSUMER_KEY);
     url = url + "?" + query.toString();
 
     let init = {body, method, headers};
