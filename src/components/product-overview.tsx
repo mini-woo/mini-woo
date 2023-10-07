@@ -8,27 +8,22 @@ export default function ProductOverview() {
     const product = state.selectedProduct
     const id = product.id
     const cartItem = state.cart.get(id)
-    const image = product.images[0] ?
-        {src:  product.images[0].src, alt : product.images[0].alt || "" } :
-        {src: "/next.svg" , alt: "no image"}
+    const images = product.images.map((image, index) =>
+        <img className="product-photo" key={index} src={image.src} alt={image.alt || ""}/>
+    )
+    if (images.length === 0)
+        images.push(<img className="product-photo" key={0} src="/no-image.png" alt="no image"/>)
 
     return (
         <div className={`product-overview ${cartItem ? "selected" : ""}`}>
-            <div className="product-counter">{cartItem?.count || 0}</div>
             <div className="product-photos">
-                <img
-                    className="product-photo"
-                    {...image}
-                />
-                <img
-                    className="product-photo"
-                    {...image}
-                />
+                {images}
             </div>
             <div className="product-label">
                 <span className="product-title">{product.name}</span>
                 <span className="product-price" dangerouslySetInnerHTML={{ __html: product.price_html }}></span>
             </div>
+            <div className="product-counter">{cartItem?.count || 0}</div>
             <div className="store-product-buttons">
                 <button className="store-product-decr-button"
                         onClick={() => dispatch({type: "dec", product})}

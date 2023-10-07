@@ -8,7 +8,7 @@ export default function OrderItem({id}: { id: number }) {
     const product = cartItem.product
     const image = product.images[0] ?
         {src: product.images[0].src, alt: product.images[0].alt || ""} :
-        {src: "/next.svg", alt: "no image", style: {filter: "invert(0.5)"}}
+        {src: "/no-image.png", alt: "no image", style: {filter: "invert(0.5)"}}
 
     return (
         <div className="order-item"

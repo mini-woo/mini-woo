@@ -7,14 +7,13 @@ export default function StoreItem({product}: { product: Product }) {
     const cartItem = state.cart.get(id)
     const image = product.images[0] ?
         {src:  product.images[0].src, alt : product.images[0].alt || "" } :
-        {src: "/next.svg" , alt: "no image"}
+        {src: "/no-image.png" , alt: "no image"}
 
     return (
         <div className={`store-product ${cartItem ? "selected" : ""}`}>
             <div
                 onClick={() => dispatch({type: "item", product})}
             >
-                <div className="store-product-counter">{cartItem?.count}</div>
                 <img
                     {...image}
                     width={74}
@@ -26,6 +25,7 @@ export default function StoreItem({product}: { product: Product }) {
                     {/*<span className="store-product-price">${product.price}</span>*/}
                 </div>
             </div>
+            <div className="store-product-counter">{cartItem?.count}</div>
             <div className="store-product-buttons">
                 <button className="store-product-decr-button"
                         onClick={() => dispatch({type: "dec", product})}
