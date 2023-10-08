@@ -41,7 +41,7 @@ export default function Home() {
                         items
                     })
 
-                    fetch("api/orders", {method: "POST", body }).then((res) =>
+                    fetch("api/orders", {method: "POST", body}).then((res) =>
                         res.json().then((result) => {
                             webApp?.openInvoice(result.invoice_link, function (status) {
                                 if (status === 'paid') {
@@ -76,7 +76,7 @@ export default function Home() {
             webApp?.MainButton.hide()
             webApp?.disableClosingConfirmation()
         }
-    }, [state.mode, state.cart, state.comment])
+    }, [state.mode, state.cart.size, state.cart, state.comment])
 
     return (
         <main className={`${state.mode}-mode`}>
