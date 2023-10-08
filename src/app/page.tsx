@@ -23,40 +23,43 @@ export default function Home() {
             webApp?.MainButton.setParams({
                 text: "CHECKOUT",
             }).onClick(() => {
-                console.log("s checkout!!!");
-
                 const invoiceSupported = webApp?.isVersionAtLeast('6.1');
-
                 if (invoiceSupported) {
                     console.log("invoice supported");
 
                     const items = Array.from(state.cart.values()).map((item) => {
                         return {
                             id: item.product.id,
-                            count:
-                            item.count
+                            count: item.count
                         }
                     })
+                    const body = JSON.stringify({
+                        userId: user?.id,
+                        chatId: webApp?.initDataUnsafe.chat?.id,
+                        comment: state.comment,
+                        shippingZone: state.shippingZone,
+                        items
+                    })
 
-                    fetch("api/orders", {method: "POST", body: JSON.stringify({userId: user?.id, items})}).then((res) =>
+                    fetch("api/orders", {method: "POST", body }).then((res) =>
                         res.json().then((result) => {
                             webApp?.openInvoice(result.invoice_link, function (status) {
-                                if (status == 'paid') {
+                                if (status === 'paid') {
                                     console.log("paid " + result);
                                     webApp?.close();
-                                } else if (status == 'failed') {
+                                } else if (status === 'failed') {
                                     console.log("failed " + result);
                                     webApp?.HapticFeedback.notificationOccurred('error');
                                 } else {
-                                    console.log("unknow " + result);
+                                    console.log("unknown " + result);
                                     webApp?.HapticFeedback.notificationOccurred('warning');
                                 }
                             });
                         })
                     );
+                } else {
+                    console.log("invoice not supported")
                 }
-
-                console.log("e checkout!!!");
             });
 
         } else if (state.cart.size !== 0) {
@@ -73,7 +76,7 @@ export default function Home() {
             webApp?.MainButton.hide()
             webApp?.disableClosingConfirmation()
         }
-    }, [state.mode, state.cart.size])
+    }, [state.mode, state.cart, state.comment])
 
     return (
         <main className={`${state.mode}-mode`}>

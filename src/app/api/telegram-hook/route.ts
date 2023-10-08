@@ -6,6 +6,7 @@ export async function POST(request: NextRequest) {
         // Retrieve the POST request body that gets sent from Telegram
         const body = await request.json()
         const query = request.nextUrl.searchParams
+        console.log("Telegram Req:", body)
 
         if (query.get("secret_hash") === SECRET_HASH) {
             await bot.handleUpdate(body)

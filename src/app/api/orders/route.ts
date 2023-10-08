@@ -24,13 +24,11 @@ export async function POST(request: NextRequest) {
         prices: [
             { label: "Working Time Machine", amount: 4200 },
             { label: "Gift wrapping", amount: 1000 },
-        ], //TODO: create prices from body.products
-        payload: JSON.stringify({
-            woo_order_id: wooOrderId,
-        }),
+        ], //TODO: retrieve prices from woocommerce by ids
+        payload: JSON.stringify(body),
         need_name: true,
         need_phone_number: true,
-        //need_shipping_address: true
+        need_shipping_address: true
     };
 
     const invoiceLink = await bot.telegram.createInvoiceLink(invoice);
