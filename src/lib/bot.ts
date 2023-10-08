@@ -40,6 +40,7 @@ bot.on("shipping_query", async (ctx) => {
             prices: [{label: "Free", amount: 0}], //TODO: set price from shipping method
         }
     })
+    console.log("shippingOptions", shippingOptions)
     if (shippingOptions.length)
         ctx.answerShippingQuery(true, shippingOptions, undefined)
     else
