@@ -6,6 +6,8 @@ import StoreFront from "@/components/store-front";
 import OrderOverview from "@/components/order-overview";
 import ProductOverview from "@/components/product-overview";
 
+import bot from "../lib/bot"
+
 export default function Home() {
     const {webApp, user} = useTelegram()
     const {state, dispatch} = useAppContext()
@@ -23,8 +25,34 @@ export default function Home() {
             webApp?.MainButton.setParams({
                 text: "CHECKOUT",
             }).onClick(() => {
-                console.log("checkout!!!")
-            })
+                console.log("s checkout!!!");
+
+                const invoiceSupported = webApp?.isVersionAtLeast('6.1');
+
+                if (invoiceSupported) {
+                    console.log("invoice supported");
+
+                    fetch("api/orders", {method: "POST", body: JSON.stringify(state.cart)}).then((res) =>
+                        res.json().then((result) => {
+                            webApp?.openInvoice(result.invoice_link, function(status) {
+                                if (status == 'paid') {
+                                    console.log("paid " + result);
+                                    webApp?.close();
+                                } else if (status == 'failed') {
+                                    console.log("failed " + result);
+                                    webApp?.HapticFeedback.notificationOccurred('error');
+                                } else {
+                                    console.log("unknow " + result);
+                                    webApp?.HapticFeedback.notificationOccurred('warning');
+                                }
+                              });
+                        })
+                    );
+                }
+
+                console.log("e checkout!!!");
+            });
+
         } else if (state.cart.size !== 0) {
             webApp?.MainButton.setParams({
                 text: "VIEW ORDER",
