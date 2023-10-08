@@ -6,8 +6,6 @@ import StoreFront from "@/components/store-front";
 import OrderOverview from "@/components/order-overview";
 import ProductOverview from "@/components/product-overview";
 
-import bot from "../lib/bot"
-
 export default function Home() {
     const {webApp, user} = useTelegram()
     const {state, dispatch} = useAppContext()
@@ -32,9 +30,17 @@ export default function Home() {
                 if (invoiceSupported) {
                     console.log("invoice supported");
 
-                    fetch("api/orders", {method: "POST", body: JSON.stringify(state.cart)}).then((res) =>
+                    const items = Array.from(state.cart.values()).map((item) => {
+                        return {
+                            id: item.product.id,
+                            count:
+                            item.count
+                        }
+                    })
+
+                    fetch("api/orders", {method: "POST", body: JSON.stringify({userId: user?.id, items})}).then((res) =>
                         res.json().then((result) => {
-                            webApp?.openInvoice(result.invoice_link, function(status) {
+                            webApp?.openInvoice(result.invoice_link, function (status) {
                                 if (status == 'paid') {
                                     console.log("paid " + result);
                                     webApp?.close();
@@ -45,7 +51,7 @@ export default function Home() {
                                     console.log("unknow " + result);
                                     webApp?.HapticFeedback.notificationOccurred('warning');
                                 }
-                              });
+                            });
                         })
                     );
                 }
