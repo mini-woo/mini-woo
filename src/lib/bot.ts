@@ -15,15 +15,14 @@ bot.start((ctx) => {
         Markup.inlineKeyboard([Markup.button.webApp("View Store", BASE_PATH)]),
     )
 });
-
-bot.on(message("text"), (ctx) => ctx.reply("Hi, I`m Mini Woo. It`s nice to meet you!:) /help"));
-bot.help((ctx) => ctx.reply("Test /start or /add_menu command!"))
-bot.command('add_menu', (ctx) =>
+bot.help((ctx) => ctx.reply("Test /start or /menu command!"))
+bot.command('menu', (ctx) =>
     ctx.setChatMenuButton({
         text: "Store",
         type: "web_app",
         web_app: {url: BASE_PATH},
     }))
+bot.on(message("text"), (ctx) => ctx.reply("Hi, I`m Mini Woo. It`s nice to meet you!:) /help"));
 
 
 //TODO: move to lib/invoice
