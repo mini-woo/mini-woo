@@ -34,7 +34,11 @@ export async function POST(request: NextRequest) {
         //need_shipping_address: true
     };
 
+<<<<<<< HEAD
     const invoiceLink = bot.telegram.createInvoiceLink(invoice);
+=======
+    const invoiceLink = bot.createInvoiceLink(invoice);
+>>>>>>> cff3ebae62964cf7d8b54e06ed118363d6c13d03
 
     return NextResponse.json({"invoice_link": invoiceLink, "order_id": wooOrderId});
 }
