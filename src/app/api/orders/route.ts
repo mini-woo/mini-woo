@@ -13,8 +13,7 @@ export async function POST(request: NextRequest) {
     //TODO: create lib/invoice 
     //https://core.telegram.org/bots/api#createinvoicelink
     const invoice = {
-        provider_token: "Stripe TEST MODE",//process.env.TELEGRAM_PAYMENT_PROVIDER_TOKEN,
-        start_parameter: "time-machine-sku",
+        provider_token: '1877036958:TEST:a06a637816e2c91246ad38b1eac33815ebd1c408',//process.env.TELEGRAM_PAYMENT_PROVIDER_TOKEN,
         title: "Working Time Machine",
         description:
             "Want to visit your great-great-great-grandparents? Make a fortune at the races? Shake hands with Hammurabi and take a stroll in the Hanging Gardens? Order our Working Time Machine today!",
