@@ -17,6 +17,13 @@ bot.start((ctx) => {
     //     type: "web_app",
     //     web_app: {url: BASE_PATH},
     // })
-})
+});
+
+bot.on("shipping_query", ctx =>
+    console.log(ctx)//TODO fetch order by id from 
+	//ctx.answerShippingQuery(true, shippingOptions, undefined),
+); //https://core.telegram.org/bots/api#shippingquery
+bot.on("pre_checkout_query", ctx => console.log(ctx));//ctx.answerPreCheckoutQuery(true)); //https://core.telegram.org/bots/api#precheckoutquery
+bot.on("successful_payment", ctx => console.log(ctx));//https://core.telegram.org/bots/api#successfulpayment
 
 export default bot
