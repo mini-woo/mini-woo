@@ -30,6 +30,8 @@ export default function Home() {
                     const items = Array.from(state.cart.values()).map((item) => {
                         return {
                             id: item.product.id,
+                            product_name: item.product.name,
+                            unit_price: item.product.price,
                             count: item.count
                         }
                     })
@@ -43,15 +45,15 @@ export default function Home() {
 
                     fetch("api/orders", {method: "POST", body}).then((res) =>
                         res.json().then((result) => {
-                            webApp?.openInvoice(result.invoice_link, function (status) {
-                                if (status === 'paid') {
-                                    console.log("paid " + result);
+                            webApp?.openInvoice(result.invoice_link, function(status) {
+                                if (status == 'paid') {
+                                    console.log("[paid] InvoiceStatus " + result);
                                     webApp?.close();
-                                } else if (status === 'failed') {
-                                    console.log("failed " + result);
+                                } else if (status == 'failed') {
+                                    console.log("[failed] InvoiceStatus " + result);
                                     webApp?.HapticFeedback.notificationOccurred('error');
                                 } else {
-                                    console.log("unknown " + result);
+                                    console.log("[unknown] InvoiceStatus" + result);
                                     webApp?.HapticFeedback.notificationOccurred('warning');
                                 }
                             });

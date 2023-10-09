@@ -2,14 +2,15 @@ const WOOCOMMERCE_URL = process.env.WOOCOMMERCE_URL!!
 const CONSUMER_KEY = process.env.WOOCOMMERCE_CONSUMER_KEY!!
 const CONSUMER_SECRET = process.env.WOOCOMMERCE_CONSUMER_SECRET!!
 
-function get(api: string, query?: URLSearchParams) {
-    return call("GET", api, query)
+function put(api: string, body: any, query?: URLSearchParams) {
+    return call("PUT", api, query, body);
 }
-
 function post(api: string, body: any, query?: URLSearchParams) {
-    return call("GET", api, query, body)
+    return call("POST", api, query, body);
 }
-
+function get(api: string, query?: URLSearchParams) {
+    return call("GET", api, query, undefined)
+}
 function call(method: string, api: string, query?: URLSearchParams, body?: any) {
     const headers = {
         "Content-Type": "application/json"
@@ -23,11 +24,14 @@ function call(method: string, api: string, query?: URLSearchParams, body?: any) 
     url = url + "?" + query.toString();
 
     let init = {body, method, headers};
-    return fetch(url, init)
+
+    console.log(`Proxy woo: ${url} | ${JSON.stringify(init)}`);
+
+    return fetch(url, init);
 }
 
 const woo = {
-    get, post
+    get, post, put,
 }
 
 export default woo
