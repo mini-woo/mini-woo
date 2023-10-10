@@ -10,23 +10,24 @@ export default function Home() {
     const {webApp, user} = useTelegram()
     const {state, dispatch} = useAppContext()
 
-    const mainButtonCallback = useCallback(async () => {
-        if (state.mode === "order") {
-            console.log("checkout!")
-            webApp?.MainButton.showProgress()
-            const invoiceSupported = webApp?.isVersionAtLeast('6.1');
-            const items = Array.from(state.cart.values()).map((item) => ({
-                id: item.product.id,
-                count: item.count
-            }))
-            const body = JSON.stringify({
-                userId: user?.id,
-                chatId: webApp?.initDataUnsafe.chat?.id,
-                invoiceSupported,
-                comment: state.comment,
-                shippingZone: state.shippingZone,
-                items
-            })
+    const handleCheckout = useCallback(async () => {
+        console.log("checkout!")
+        webApp?.MainButton.showProgress()
+        const invoiceSupported = webApp?.isVersionAtLeast('6.1');
+        const items = Array.from(state.cart.values()).map((item) => ({
+            id: item.product.id,
+            count: item.count
+        }))
+        const body = JSON.stringify({
+            userId: user?.id,
+            chatId: webApp?.initDataUnsafe.chat?.id,
+            invoiceSupported,
+            comment: state.comment,
+            shippingZone: state.shippingZone,
+            items
+        })
+
+        try {
             const res = await fetch("api/orders", {method: "POST", body})
             const result = await res.json()
 
@@ -45,18 +46,29 @@ export default function Home() {
                     }
                 });
             } else {
-                webApp?.showAlert("Some feature not available please update your telegram app!")
+                webApp?.showAlert("Some features not available. Please update your telegram app!")
             }
-        } else dispatch({type: "order"})
-    }, [webApp, state.mode, state.cart, state.comment, state.shippingZone])
+        } catch (_) {
+            webApp?.showAlert("Some error occurred while processing order!")
+            webApp?.MainButton.hideProgress()
+        }
+
+
+    }, [webApp, state.cart, state.comment, state.shippingZone])
 
     useEffect(() => {
+        const callback = state.mode === "order" ? handleCheckout :
+            () => dispatch({type: "order"})
         webApp?.MainButton.setParams({
             text_color: '#fff',
             color: '#31b545'
-        }).onClick(mainButtonCallback)
+        }).onClick(callback)
         webApp?.BackButton.onClick(() => dispatch({type: "storefront"}))
-    }, [webApp, mainButtonCallback])
+        return () => {
+            //prevent multiple call
+            webApp?.MainButton.offClick(callback)
+        }
+    }, [webApp, state.mode, handleCheckout])
 
     useEffect(() => {
         if (state.mode === "storefront")
