@@ -6,8 +6,8 @@ export default function StoreItem({product}: { product: Product }) {
     const id = product.id
     const cartItem = state.cart.get(id)
     const image = product.images[0] ?
-        {src:  product.images[0].src, alt : product.images[0].alt || "" } :
-        {src: "/no-image.png" , alt: "no image"}
+        {src: product.images[0].src, alt: product.images[0].alt || ""} :
+        {src: "/no-image.png", alt: "no image"}
 
     return (
         <div className={`store-product ${cartItem ? "selected" : ""}`}>
@@ -21,8 +21,7 @@ export default function StoreItem({product}: { product: Product }) {
                 />
                 <div className="store-product-label">
                     <span className="store-product-title">{product.name}</span>
-                    <span className="store-product-price" dangerouslySetInnerHTML={{ __html: product.price_html }}></span>
-                    {/*<span className="store-product-price">${product.price}</span>*/}
+                    <span className="store-product-price" dangerouslySetInnerHTML={{__html: product.price_html}}></span>
                 </div>
             </div>
             <div className="store-product-counter">{cartItem?.count}</div>

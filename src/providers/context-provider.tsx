@@ -13,6 +13,7 @@ type Action =
     | { type: "select-cat", category: Category }
     | { type: "inc", product: Product }
     | { type: "dec", product: Product }
+    | { type: "comment", comment: string }
 
 type Dispatch = (action: Action) => void
 
@@ -113,6 +114,10 @@ function contextReducer(state: State, action: Action) {
                 state.cart.delete(action.product.id)
             else
                 state.cart.set(action.product.id, {product: action.product, count: count - 1})
+            break
+        }
+        case 'comment': {
+            state.comment = action.comment
             break
         }
         default: {

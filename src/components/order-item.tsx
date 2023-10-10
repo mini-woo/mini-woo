@@ -30,9 +30,9 @@ export default function OrderItem({id}: { id: number }) {
                         {cartItem.count}x
                     </span>
                 </div>
-                <div className="order-item-description" dangerouslySetInnerHTML={{ __html: product.short_description }}></div>
+                {/*<div className="order-item-description" dangerouslySetInnerHTML={{__html: product.short_description}}></div>*/}
             </div>
-            <div className="order-item-price" dangerouslySetInnerHTML={{ __html: product.price_html }}></div>
+            <div className="order-item-price" dangerouslySetInnerHTML={{__html: product.price_html}}></div>
         </div>
     )
 }

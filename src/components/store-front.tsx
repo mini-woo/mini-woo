@@ -13,7 +13,7 @@ export default function StoreFront() {
     }, [state.selectedCategory])
 
     const items = state.loading && state.products.length === 0 ?
-        Array(12).fill(<StoreItemSkeleton/>) :
+        Array(12).fill(0).map((value, index) => <StoreItemSkeleton key={`n${index}`}/>) :
         state.products.map((product) => <StoreItem key={product.id} product={product}/>)
 
     return (

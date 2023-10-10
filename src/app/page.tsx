@@ -26,6 +26,7 @@ export default function Home() {
                 const invoiceSupported = webApp?.isVersionAtLeast('6.1');
                 if (invoiceSupported) {
                     console.log("invoice supported");
+                    webApp?.MainButton.showProgress()
 
                     const items = Array.from(state.cart.values()).map((item) => {
                         return {
@@ -44,6 +45,7 @@ export default function Home() {
                     fetch("api/orders", {method: "POST", body}).then((res) =>
                         res.json().then((result) => {
                             webApp?.openInvoice(result.invoice_link, function(status) {
+                                webApp?.MainButton.hideProgress()
                                 if (status == 'paid') {
                                     console.log("[paid] InvoiceStatus " + result);
                                     webApp?.close();

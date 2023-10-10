@@ -23,6 +23,8 @@ To use this project, you need to set the following environment variables:
   This is the access token that you get from [@BotFather](https://t.me/BotFather) when you create your Telegram bot.
 - `TELEGRAM_BOT_SECRET`
   This is a password that you set to secure your APIs. It can be any string, such as `my-pass` or a randomly generated hash. Please make sure to keep it secret.
+- `TELEGRAM_PAYMENT_PROVIDER_TOKEN`
+  This is telegram payment provider token. You can connect payment methods from BotFather. [Payment Providers](https://core.telegram.org/bots/payments#supported-payment-providers), [Supported Currencies](https://core.telegram.org/bots/payments#supported-currencies)
 
 
 - `WOOCOMMERCE_URL`
@@ -51,6 +53,16 @@ npm run start
 ```
 This will build and start your app on the port specified by the `PORT` variable in `.env`.
 
+#### Run Locally for Development
+
+Set environment variables then run:
+
+```bash
+npm run dev
+```
+
+you can use https://ngrok.com/
+
 ### Init Telegram Bot API Webhook
 
 This is the last step! You need to set up a webhook for your Telegram bot to receive updates from Telegram. To do this, you just need to make a POST request to the following URL:
@@ -63,10 +75,26 @@ Replace `<your-deployment-url>` with the base URL of your deployment and `<the-s
 
 Now your mini app is ready! You can test it by sending commands or messages to your Telegram bot. Enjoy! 😊
 
+## Features
+
+- [x] Show products list
+- [x] Filter by category
+- [x] Register Order
+- [x] Pay with telegram payment
+- [ ] Support variable items
+- [ ] Support search items
+- [ ] Support shipping methods
+- [ ] Support other payment methods
+- [ ] more...
+
 ## Learn More
 
 To learn more, take a look at the following resources:
 
+- [Telegram Mini App](https://core.telegram.org/bots/webapps) - Starting point to learn about telegram web apps.
+- [Telegram Bot API](https://core.telegram.org/bots/api) - Telegram Bot API full documentation.
+- [Telegraf.js](https://telegraf.js.org/index.html) - Modern Telegram Bot API framework for Node.js (documents).
+- [WooCommerce API](https://woocommerce.github.io/woocommerce-rest-api-docs) - WooCommerce REST api documentation.
 - [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
 - [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 

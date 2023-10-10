@@ -1,12 +1,12 @@
 import {NextRequest, NextResponse} from "next/server";
-import bot, {SECRET_HASH, WEBHOOK_URL} from "@/lib/bot";
+import {initWebhook, SECRET_HASH} from "@/lib/bot";
 
 export async function POST(request: NextRequest) {
     try {
         const query = request.nextUrl.searchParams
 
         if (query.get("secret_hash") === SECRET_HASH) {
-            await bot.telegram.setWebhook(WEBHOOK_URL)
+            await initWebhook()
         } else {
             console.log("Unauthorized init call denied!")
             return NextResponse.json('error', {status: 401})
