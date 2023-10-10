@@ -30,8 +30,28 @@ function call(method: string, api: string, query?: URLSearchParams, body?: any) 
     return fetch(url, init);
 }
 
+async function createOrder(line_items: any[], customer_note: string) {
+    const body = {
+        "set_paid": false,
+        line_items,
+        customer_note,
+    }
+    const res = await post("orders", body)
+    return await res.json()
+}
+
+function updateOrder(orderId: number, update: any) {
+    return put(`orders/${orderId}`, update)
+}
+
+async function getShippingMethods(zoneId: number) {
+    const res = await woo.get(`shipping/zones/${zoneId}/methods`)
+    const methods: any[] = await res.json()
+    return methods;
+}
+
 const woo = {
-    get, post, put,
+    get, post, createOrder, updateOrder, getShippingMethods
 }
 
 export default woo

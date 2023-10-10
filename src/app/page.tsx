@@ -30,8 +30,6 @@ export default function Home() {
                     const items = Array.from(state.cart.values()).map((item) => {
                         return {
                             id: item.product.id,
-                            product_name: item.product.name,
-                            unit_price: item.product.price,
                             count: item.count
                         }
                     })
