@@ -1,6 +1,10 @@
 # Mini Woo: A Telegram Mini App for WooCommerce
 
-Mini Woo is a project that allows you to create a [mini app](https://core.telegram.org/bots/webapps) for [Telegram](https://telegram.org/), the messaging app with over 500 million active users, that connects to your [WooCommerce](https://woocommerce.com/) website, the most popular e-commerce platform on the web. It uses [Next.js](https://nextjs.org/), a React framework for building fast and scalable web applications, and the Telegram [Bot API](https://core.telegram.org/bots/api) and the WooCommerce [REST API](https://woocommerce.github.io/woocommerce-rest-api-docs/) to provide a seamless shopping experience for your customers on Telegram. 
+Mini Woo is a project that allows you to create a [mini app](https://core.telegram.org/bots/webapps) for [Telegram](https://telegram.org/), the messaging app with over 500 million active users, that connects to your [WooCommerce](https://woocommerce.com/) website, the most popular e-commerce platform on the web. 
+
+![Brief video](./.github/mini-woo.gif "Short video showing opening the shop, browsing products, adding to cart, and paying with Telegram.")
+
+It uses [Next.js](https://nextjs.org/), a React framework for building fast and scalable web applications, and the Telegram [Bot API](https://core.telegram.org/bots/api) and the WooCommerce [REST API](https://woocommerce.github.io/woocommerce-rest-api-docs/) to provide a seamless shopping experience for your customers on Telegram. 
 
 You can use this project as a template to customize your mini app with your own branding, products, and features, or modify the API to connect any other online store that supports RESTful web services. This project is open source and free to use. You can find the source code, documentation, and installation instructions [here on GitHub](https://github.com/mini-woo/mini-woo).
 
